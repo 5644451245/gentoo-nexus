@@ -305,7 +305,7 @@ jobs:
           getuto 2>/dev/null || emerge -q --oneshot app-crypt/gentoo-keys 2>/dev/null || true
 
           cat > /etc/portage/make.conf << 'MAKECONF'
-          COMMON_FLAGS="-O3 -pipe -march=x86-64-v3"
+          COMMON_FLAGS="-O3 -pipe -march=skylake"
           CFLAGS="${COMMON_FLAGS}"
           CXXFLAGS="${COMMON_FLAGS}"
           FCFLAGS="${COMMON_FLAGS}"
@@ -395,8 +395,8 @@ jobs:
           cat > /etc/portage/package.use/nexus << 'USES'
           media-libs/opus abi_x86_64
           gui-libs/gtk introspection
-          sys-auth/seatd server
-          sys-kernel/installkernel dracut grub
+          sys-auth/seatd -server
+          sys-kernel/installkernel -dracut grub
           sys-kernel/linux-firmware redistributable initramfs
           sys-libs/minizip-ng compat
           sys-apps/dbus -systemd elogind
@@ -404,11 +404,12 @@ jobs:
           dev-libs/libdbusmenu gtk3
           net-misc/networkmanager bluetooth modemmanager
           sys-libs/ncurses gpm
-          www-client/firefox clang pgo lto -system-harfbuzz system-icu -system-jpeg -system-libevent -system-libvpx -system-sqlite wayland -wifi -system-av1 -system-harfbuzz -system-icu -system-jpeg -system-libevent -system-libvpx system-pipewire -system-png system-webp -test wayland -wifi X -gmp-autoupdate -gnome-shell -jpegxl jumbo-build -openh264 -telemetry 
+          www-client/firefox clang pgo lto -system-harfbuzz system-icu -system-jpeg -system-libevent -system-libvpx -system-sqlite wayland -wifi -system-av1 -system-harfbuzz -system-icu -system-jpeg -system-libevent -system-libvpx system-pipewire -system-png system-webp -test wayland -wifi X gmp-autoupdate -gnome-shell -jpegxl jumbo-build -openh264 -telemetry 
           sys-libs/zlib-ng abi_x86_32 abi_x86_64 compat
-          x11-libs/libdrm video_cards_amdgpu video_cards_radeon
+          x11-libs/libdrm video_cards_amdgpu -video_cards_radeon
           media-libs/mesa -rust -opencl proprietary-codecs
           media-video/ffmpeg x264 x265 vpx opus dav1d vaapi vdpau
+          x11-base/xorg-server xvfb
           */* VIDEO_CARDS: -* amdgpu radeonsi intel
           USES
           
