@@ -554,7 +554,11 @@ jobs:
           x11-libs/xcb-util-keysyms abi_x86_32
           x11-misc/colord abi_x86_32
           GAMING
-
+          
+          cat > /etc/portage/package.use/zzz-xorg-server << 'XORG'
+          x11-base/xorg-server xvfb -minimal
+          XORG
+         
           mkdir -p /etc/portage/package.mask
           echo '>=dev-libs/libgit2-1.9.3' > /etc/portage/package.mask/libgit2
 
