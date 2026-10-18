@@ -305,7 +305,7 @@ jobs:
           getuto 2>/dev/null || emerge -q --oneshot app-crypt/gentoo-keys 2>/dev/null || true
 
           cat > /etc/portage/make.conf << 'MAKECONF'
-          COMMON_FLAGS="-O3 -pipe -march=skylake"
+          COMMON_FLAGS="-O3 -pipe -march=skylake -flto -fipa-pta"
           CFLAGS="${COMMON_FLAGS}"
           CXXFLAGS="${COMMON_FLAGS}"
           FCFLAGS="${COMMON_FLAGS}"
@@ -324,7 +324,7 @@ jobs:
           DISTDIR="/var/cache/distfiles"
           
           ACCEPT_LICENSE="*"
-          ACCEPT_KEYWORDS="~amd64"
+          ACCEPT_KEYWORDS="amd64"
           ACCEPT_PROPERTIES="*"
           ACCEPT_RESTRICT="*"
           ACCEPT_CHOSTS="x86_64-pc-linux-gnu"
