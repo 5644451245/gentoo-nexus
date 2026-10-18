@@ -404,7 +404,7 @@ jobs:
           dev-libs/libdbusmenu gtk3
           net-misc/networkmanager bluetooth modemmanager
           sys-libs/ncurses gpm
-          www-client/firefox clang pgo lto -system-harfbuzz system-icu -system-jpeg -system-libevent -system-libvpx -system-sqlite wayland -wifi -system-av1 -system-harfbuzz -system-icu -system-jpeg -system-libevent -system-libvpx system-pipewire -system-png system-webp -test wayland -wifi X gmp-autoupdate -gnome-shell -jpegxl jumbo-build -openh264 -telemetry 
+          www-client/firefox clang -pgo lto -system-harfbuzz system-icu -system-jpeg -system-libevent -system-libvpx -system-sqlite wayland -wifi -system-av1 -system-harfbuzz -system-icu -system-jpeg -system-libevent -system-libvpx system-pipewire -system-png system-webp -test wayland -wifi X gmp-autoupdate -gnome-shell -jpegxl jumbo-build -openh264 -telemetry 
           sys-libs/zlib-ng abi_x86_32 abi_x86_64 compat
           x11-libs/libdrm video_cards_amdgpu -video_cards_radeon
           media-libs/mesa -rust -opencl proprietary-codecs
