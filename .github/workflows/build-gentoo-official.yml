@@ -351,7 +351,7 @@ jobs:
           sys-libs/zlib-ng abi_x86_32 abi_x86_64 compat
           x11-libs/libdrm video_cards_amdgpu video_cards_radeon
           x11-base/xorg-server udev xvfb xorg -minimum
-          www-client/firefox clang pgo lto -system-harfbuzz system-icu -system-jpeg -system-libevent -system-libvpx -system-sqlite wayland -wifi -system-av1 -system-harfbuzz system-icu -system-jpeg -system-libevent -system-libvpx system-pipewire -system-png system-webp -test wayland -wifi X gmp-autoupdate -gnome-shell -jpegxl jumbo-build -openh264 -telemetry
+          www-client/firefox clang -pgo lto -system-harfbuzz system-icu -system-jpeg -system-libevent -system-libvpx -system-sqlite wayland -wifi -system-av1 -system-harfbuzz system-icu -system-jpeg -system-libevent -system-libvpx system-pipewire -system-png system-webp -test wayland -wifi X gmp-autoupdate -gnome-shell -jpegxl jumbo-build -openh264 -telemetry
           media-libs/mesa -rust -opencl proprietary-codecs
           media-video/ffmpeg x264 x265 vpx opus dav1d vaapi -vdpau
           */* VIDEO_CARDS: -* amdgpu radeonsi intel
@@ -665,14 +665,14 @@ jobs:
             echo ">>> FORCE REBUILD: compiling ${TARGET} from source (deps from binpkg)"
             emerge --oneshot --getbinpkg --buildpkg --usepkg-exclude "$PN" \
               --binpkg-respect-use=y --quiet-build=y --keep-going \
-              --autounmask=y \
+              --autounmask=n \
               "$TARGET" 2>&1 | tee /tmp/emerge.log
             BUILD_EXIT=${PIPESTATUS[0]}
           else
             # Normal build: reuse existing binaries where possible, build target.
             emerge --oneshot --usepkg --getbinpkg --buildpkg --backtrack=30 \
               --binpkg-respect-use=y --quiet-build=y --keep-going \
-              --autounmask=y \
+              --autounmask=n \
               "$TARGET" 2>&1 | tee /tmp/emerge.log
             BUILD_EXIT=${PIPESTATUS[0]}
           fi
