@@ -309,10 +309,6 @@ jobs:
           FFLAGS="${COMMON_FLAGS}"
           VIDEO_CARDS="amdgpu radeonsi intel"
           CPU_FLAGS_X86="avx avx2 f16c fma3 mmx mmxext popcnt sse sse2 sse3 sse4_1 sse4_2 ssse3"
-          # USE flags are inherited from the selected desktop/gnome profile.
-          # The official Gentoo x86-64-v3 binhost sets NO custom global USE (only
-          # profile defaults + */* CPU_FLAGS_X86), so we match it here for binary
-          # compatibility. ffmpeg codec flags are set per-package in package.use below.
 
           FEATURES="getbinpkg buildpkg ccache binpkg-ignore-signature -pkgdir-index-trusted -sandbox -usersandbox -ipc-sandbox -network-sandbox -pid-sandbox"
           CCACHE_DIR="/var/cache/ccache"
@@ -341,162 +337,161 @@ jobs:
           gui-libs/gtk introspection
           sys-auth/seatd -server
           sys-kernel/installkernel -dracut grub
-          sys-kernel/linux-firmware redistributable initramfs
+          sys-kernel/linux-firmware redistributable -initramfs
           sys-libs/minizip-ng compat
           sys-apps/dbus -systemd elogind
           media-video/pipewire -systemd elogind -ffmpeg
           dev-libs/libdbusmenu gtk3
-          net-misc/networkmanager bluetooth modemmanager
+          net-misc/networkmanager bluetooth -modemmanager
           sys-libs/ncurses gpm
           sys-libs/zlib-ng abi_x86_32 abi_x86_64 compat
           x11-libs/libdrm video_cards_amdgpu video_cards_radeon
           x11-base/xorg-server udev xvfb xorg -minimum
-          www-client/firefox clang -pgo lto -system-harfbuzz system-icu -system-jpeg -system-libevent -system-libvpx -system-sqlite wayland -wifi -system-av1 -system-harfbuzz system-icu -system-jpeg -system-libevent -system-libvpx system-pipewire -system-png system-webp -test wayland -wifi X gmp-autoupdate -gnome-shell -jpegxl jumbo-build -openh264 -telemetry
+          www-client/firefox clang pgo lto -system-harfbuzz system-icu -system-jpeg -system-libevent -system-libvpx -system-sqlite wayland -wifi -system-av1 -system-harfbuzz system-icu -system-jpeg -system-libevent -system-libvpx system-pipewire -system-png system-webp -test wayland -wifi X gmp-autoupdate -gnome-shell -jpegxl jumbo-build -openh264 -telemetry
           media-libs/mesa -rust -opencl -proprietary-codecs
-          media-video/ffmpeg -x264 -x265 -vpx -opus dav1d vaapi -vdpau
+          media-video/ffmpeg -x264 -x265 -vpx -opus -dav1d vaapi -vdpau
           */* VIDEO_CARDS: -* amdgpu radeonsi intel
           USES
 
           cat > /etc/portage/package.use/gaming << 'GAMING'
-          app-accessibility/at-spi2-core abi_x86_32
-          app-arch/brotli abi_x86_32
-          app-arch/bzip2 abi_x86_32
-          app-arch/lz4 abi_x86_32
-          app-arch/xz-utils abi_x86_32
-          app-arch/zstd abi_x86_32
-          app-crypt/p11-kit abi_x86_32
-          dev-db/sqlite abi_x86_32
-          dev-lang/rust abi_x86_32
-          dev-lang/rust-bin abi_x86_32
-          dev-libs/dbus-glib abi_x86_32
-          dev-libs/elfutils abi_x86_32
-          dev-libs/expat abi_x86_32
-          dev-libs/fribidi abi_x86_32
-          dev-libs/glib abi_x86_32
-          dev-libs/gmp abi_x86_32
-          dev-libs/icu abi_x86_32
-          dev-libs/json-glib abi_x86_32
-          dev-libs/leancrypto abi_x86_32
-          dev-libs/libevdev abi_x86_32
-          dev-libs/libffi abi_x86_32
-          dev-libs/libgcrypt abi_x86_32
-          dev-libs/libgpg-error abi_x86_32
-          dev-libs/libgudev abi_x86_32
-          dev-libs/libgusb abi_x86_32
-          dev-libs/libpcre2 abi_x86_32
-          dev-libs/libtasn1 abi_x86_32
-          dev-libs/libunistring abi_x86_32
-          dev-libs/libusb abi_x86_32
-          dev-libs/libxml2 abi_x86_32
-          dev-libs/lzo abi_x86_32
-          dev-libs/nettle abi_x86_32
-          dev-libs/nspr abi_x86_32
-          dev-libs/nss abi_x86_32
-          dev-libs/openssl abi_x86_32
-          dev-libs/wayland abi_x86_32
-          dev-util/glslang abi_x86_32
-          dev-util/spirv-tools abi_x86_32
-          dev-util/sysprof-capture abi_x86_32
-          dev-util/vulkan-utility-libraries abi_x86_32
-          gnome-base/librsvg abi_x86_32
-          gui-libs/libdecor abi_x86_32
-          llvm-core/clang abi_x86_32
-          llvm-core/llvm abi_x86_32 -xml
-          llvm-runtimes/compiler-rt abi_x86_32
-          media-gfx/graphite2 abi_x86_32
-          media-libs/alsa-lib abi_x86_32
-          media-libs/flac abi_x86_32
-          media-libs/fontconfig abi_x86_32
-          media-libs/freetype brotli harfbuzz abi_x86_32
-          media-libs/glu abi_x86_32
-          media-libs/harfbuzz abi_x86_32
-          media-libs/lcms abi_x86_32
-          media-libs/libdisplay-info abi_x86_32
-          media-libs/libepoxy abi_x86_32
-          media-libs/libglvnd abi_x86_32 X
-          media-libs/libjpeg-turbo abi_x86_32
-          media-libs/libogg abi_x86_32
-          media-libs/libpng abi_x86_32
-          media-libs/libpulse abi_x86_32
-          media-libs/libsdl2 abi_x86_32
-          media-libs/libsdl3 abi_x86_32
-          media-libs/libsndfile abi_x86_32
-          media-libs/libva abi_x86_32
-          media-libs/libvorbis abi_x86_32
-          media-libs/libwebp abi_x86_32
-          media-libs/mesa abi_x86_32
-          media-libs/openal abi_x86_32
-          media-libs/opus abi_x86_32
-          media-libs/tiff abi_x86_32
-          media-libs/vulkan-layers abi_x86_32
-          media-libs/vulkan-loader abi_x86_32 layers
-          media-sound/lame abi_x86_32
-          media-sound/mpg123-base abi_x86_32
-          media-video/pipewire abi_x86_32
-          net-dns/c-ares abi_x86_32
-          net-dns/libidn2 abi_x86_32
-          net-libs/gnutls abi_x86_32
-          net-libs/libasyncns abi_x86_32
-          net-libs/libndp abi_x86_32
-          net-libs/libpsl abi_x86_32
-          net-libs/nghttp2 abi_x86_32
-          net-libs/nghttp3 abi_x86_32
-          net-libs/ngtcp2 abi_x86_32
-          net-misc/curl abi_x86_32
-          net-misc/networkmanager abi_x86_32
-          net-print/cups abi_x86_32
-          sys-apps/dbus abi_x86_32
-          sys-apps/lm-sensors abi_x86_32
-          sys-apps/systemd-utils abi_x86_32
-          sys-apps/util-linux abi_x86_32
-          sys-libs/gdbm abi_x86_32
-          sys-libs/glibc hash-sysv-compat
-          sys-libs/gpm abi_x86_32
-          sys-libs/libcap abi_x86_32
-          sys-libs/libudev-compat abi_x86_32
-          sys-libs/ncurses abi_x86_32
-          sys-libs/pam abi_x86_32
-          sys-libs/readline abi_x86_32
-          sys-libs/zlib abi_x86_32
-          virtual/glu abi_x86_32
-          virtual/libelf abi_x86_32
-          virtual/libiconv abi_x86_32
-          virtual/libintl abi_x86_32
-          virtual/libudev abi_x86_32
-          virtual/libusb abi_x86_32
-          virtual/opengl abi_x86_32
-          virtual/zlib abi_x86_32
-          x11-libs/cairo abi_x86_32
-          x11-libs/gdk-pixbuf abi_x86_32
-          x11-libs/gtk+ abi_x86_32
-          x11-libs/libICE abi_x86_32
-          x11-libs/libSM abi_x86_32
-          x11-libs/libX11 abi_x86_32
-          x11-libs/libXScrnSaver abi_x86_32
-          x11-libs/libXau abi_x86_32
-          x11-libs/libXcomposite abi_x86_32
-          x11-libs/libXcursor abi_x86_32
-          x11-libs/libXdamage abi_x86_32
-          x11-libs/libXdmcp abi_x86_32
-          x11-libs/libXext abi_x86_32
-          x11-libs/libXfixes abi_x86_32
-          x11-libs/libXft abi_x86_32
-          x11-libs/libXi abi_x86_32
-          x11-libs/libXinerama abi_x86_32
-          x11-libs/libXrandr abi_x86_32
-          x11-libs/libXrender abi_x86_32
-          x11-libs/libXtst abi_x86_32
-          x11-libs/libXxf86vm abi_x86_32
-          x11-libs/libdrm abi_x86_32
-          x11-libs/libpciaccess abi_x86_32
-          x11-libs/libvdpau abi_x86_32
-          x11-libs/libxcb abi_x86_32
-          x11-libs/libxkbcommon abi_x86_32
-          x11-libs/libxshmfence abi_x86_32
-          x11-libs/pango abi_x86_32
-          x11-libs/pixman abi_x86_32
-          x11-libs/xcb-util-keysyms abi_x86_32
-          x11-misc/colord abi_x86_32
+          app-accessibility/at-spi2-core -abi_x86_32
+          app-arch/brotli -abi_x86_32
+          app-arch/bzip2 -abi_x86_32
+          app-arch/lz4 -abi_x86_32
+          app-arch/xz-utils -abi_x86_32
+          app-arch/zstd -abi_x86_32
+          app-crypt/p11-kit -abi_x86_32
+          dev-db/sqlite -abi_x86_32
+          dev-lang/rust -abi_x86_32
+          dev-lang/rust-bin -abi_x86_32
+          dev-libs/dbus-glib -abi_x86_32
+          dev-libs/elfutils -abi_x86_32
+          dev-libs/expat -abi_x86_32
+          dev-libs/fribidi -abi_x86_32
+          dev-libs/glib -abi_x86_32
+          dev-libs/gmp -abi_x86_32
+          dev-libs/icu -abi_x86_32
+          dev-libs/json-glib -abi_x86_32
+          dev-libs/leancrypto -abi_x86_32
+          dev-libs/libevdev -abi_x86_32
+          dev-libs/libffi -abi_x86_32
+          dev-libs/libgcrypt -abi_x86_32
+          dev-libs/libgpg-error -abi_x86_32
+          dev-libs/libgudev -abi_x86_32
+          dev-libs/libgusb -abi_x86_32
+          dev-libs/libpcre2 -abi_x86_32
+          dev-libs/libtasn1 -abi_x86_32
+          dev-libs/libunistring -abi_x86_32
+          dev-libs/libusb -abi_x86_32
+          dev-libs/libxml2 -abi_x86_32
+          dev-libs/lzo -abi_x86_32
+          dev-libs/nettle -abi_x86_32
+          dev-libs/nspr -abi_x86_32
+          dev-libs/nss -abi_x86_32
+          dev-libs/openssl -abi_x86_32
+          dev-libs/wayland -abi_x86_32
+          dev-util/glslang -abi_x86_32
+          dev-util/spirv-tools -abi_x86_32
+          dev-util/sysprof-capture -abi_x86_32
+          dev-util/vulkan-utility-libraries -abi_x86_32
+          gnome-base/librsvg -abi_x86_32
+          gui-libs/libdecor -abi_x86_32
+          llvm-core/clang -abi_x86_32
+          llvm-core/llvm -abi_x86_32
+          llvm-runtimes/compiler-rt -abi_x86_32
+          media-gfx/graphite2 -abi_x86_32
+          media-libs/alsa-lib -abi_x86_32
+          media-libs/flac -abi_x86_32
+          media-libs/fontconfig -abi_x86_32
+          media-libs/freetype brotli harfbuzz -abi_x86_32
+          media-libs/glu -abi_x86_32
+          media-libs/harfbuzz -abi_x86_32
+          media-libs/lcms -abi_x86_32
+          media-libs/libdisplay-info -abi_x86_32
+          media-libs/libepoxy -abi_x86_32
+          media-libs/libglvnd -abi_x86_32 X
+          media-libs/libjpeg-turbo -abi_x86_32
+          media-libs/libogg -abi_x86_32
+          media-libs/libpng -abi_x86_32
+          media-libs/libpulse -abi_x86_32
+          media-libs/libsdl2 -abi_x86_32
+          media-libs/libsdl3 -abi_x86_32
+          media-libs/libsndfile -abi_x86_32
+          media-libs/libva -abi_x86_32
+          media-libs/libvorbis -abi_x86_32
+          media-libs/libwebp -abi_x86_32
+          media-libs/mesa -abi_x86_32
+          media-libs/openal -abi_x86_32
+          media-libs/opus -abi_x86_32
+          media-libs/tiff -abi_x86_32
+          media-libs/vulkan-layers -abi_x86_32
+          media-libs/vulkan-loader -abi_x86_32 -layers
+          media-sound/lame -abi_x86_32
+          media-sound/mpg123-base -abi_x86_32
+          media-video/pipewire -abi_x86_32
+          net-dns/c-ares -abi_x86_32
+          net-dns/libidn2 -abi_x86_32
+          net-libs/gnutls -abi_x86_32
+          net-libs/libasyncns -abi_x86_32
+          net-libs/libndp -abi_x86_32
+          net-libs/libpsl -abi_x86_32
+          net-libs/nghttp2 -abi_x86_32
+          net-libs/nghttp3 -abi_x86_32
+          net-libs/ngtcp2 -abi_x86_32
+          net-misc/curl -abi_x86_32
+          net-misc/networkmanager -abi_x86_32
+          net-print/cups -abi_x86_32
+          sys-apps/dbus -abi_x86_32
+          sys-apps/lm-sensors -abi_x86_32
+          sys-apps/systemd-utils -abi_x86_32
+          sys-apps/util-linux -abi_x86_32
+          sys-libs/gdbm -abi_x86_32
+          sys-libs/gpm -abi_x86_32
+          sys-libs/libcap -abi_x86_32
+          sys-libs/libudev-compat -abi_x86_32
+          sys-libs/ncurses -abi_x86_32
+          sys-libs/pam -abi_x86_32
+          sys-libs/readline -abi_x86_32
+          sys-libs/zlib -abi_x86_32
+          virtual/glu -abi_x86_32
+          virtual/libelf -abi_x86_32
+          virtual/libiconv -abi_x86_32
+          virtual/libintl -abi_x86_32
+          virtual/libudev -abi_x86_32
+          virtual/libusb -abi_x86_32
+          virtual/opengl -abi_x86_32
+          virtual/zlib -abi_x86_32
+          x11-libs/cairo -abi_x86_32
+          x11-libs/gdk-pixbuf -abi_x86_32
+          x11-libs/gtk+ -abi_x86_32
+          x11-libs/libICE -abi_x86_32
+          x11-libs/libSM -abi_x86_32
+          x11-libs/libX11 -abi_x86_32
+          x11-libs/libXScrnSaver -abi_x86_32
+          x11-libs/libXau -abi_x86_32
+          x11-libs/libXcomposite -abi_x86_32
+          x11-libs/libXcursor -abi_x86_32
+          x11-libs/libXdamage -abi_x86_32
+          x11-libs/libXdmcp -abi_x86_32
+          x11-libs/libXext -abi_x86_32
+          x11-libs/libXfixes -abi_x86_32
+          x11-libs/libXft -abi_x86_32
+          x11-libs/libXi -abi_x86_32
+          x11-libs/libXinerama -abi_x86_32
+          x11-libs/libXrandr -abi_x86_32
+          x11-libs/libXrender -abi_x86_32
+          x11-libs/libXtst -abi_x86_32
+          x11-libs/libXxf86vm -abi_x86_32
+          x11-libs/libdrm -abi_x86_32
+          x11-libs/libpciaccess -abi_x86_32
+          x11-libs/libvdpau -abi_x86_32
+          x11-libs/libxcb -abi_x86_32
+          x11-libs/libxkbcommon -abi_x86_32
+          x11-libs/libxshmfence -abi_x86_32
+          x11-libs/pango -abi_x86_32
+          x11-libs/pixman -abi_x86_32
+          x11-libs/xcb-util-keysyms -abi_x86_32
+          x11-misc/colord -abi_x86_32
           GAMING
 
           mkdir -p /etc/portage/binrepos.conf
@@ -508,10 +503,6 @@ jobs:
           verify-signature = true
           BINHOST
 
-          # Portage >=3.0.81 ships a default [gentoo] binrepo at
-          # /usr/share/portage/config/binrepos.conf/gentoo.conf with
-          # x86-64 paths. Override it here (higher priority dir) to
-          # use x86-64-v3 instead of deleting the shipped file.
           cat > /etc/portage/binrepos.conf/gentoo.conf << 'BINHOST'
           [gentoo]
           priority = 0
@@ -541,12 +532,6 @@ jobs:
 
           emerge --oneshot --getbinpkg --backtrack=30 --quiet-build=y '>=dev-libs/gobject-introspection-1.86.0' 2>/dev/null || true
 
-          # Pre-build sysprof-capture with abi_x86_32 before any target that
-          # might transitively pull in glib (e.g. via gdbus-codegen).
-          # Must run BEFORE gdbus-codegen emerge — otherwise the official
-          # binhost's binary (without abi_x86_32) gets cached and the rebuild
-          # attempt fails.  The local binrepo (priority 15) ensures the
-          # pre-built package is found by --getbinpkg before remote repos.
           echo ">>> Pre-building sysprof-capture with abi_x86_32..."
           emerge --oneshot --buildpkg --getbinpkg=n --usepkg=n \
               --backtrack=30 --quiet-build=y \
@@ -562,10 +547,6 @@ jobs:
               }
           fi
 
-          # Pre-build xbitmaps from source (binary from official binhost can
-          # spuriously fail, cascading to drop xorg-server and drivers).
-          # Always run because transitive deps (e.g. media-gfx/blender-bin
-          # pulling xorg-server) are not caught by a TARGET-based grep.
           emerge --oneshot --buildpkg --getbinpkg=n --usepkg=n \
               --backtrack=30 --quiet-build=y \
               "x11-misc/xbitmaps" 2>/dev/null || true
