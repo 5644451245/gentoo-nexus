@@ -262,10 +262,10 @@ command -v getuto >/dev/null 2>&1 && getuto || true
 
 # 3. MAKE.CONF
 cat > /etc/portage/make.conf << EOF
-COMMON_FLAGS="-O2 -march=${CPU_ARCH} -mtune=${CPU_ARCH} -pipe"
+COMMON_FLAGS="-O3 -march=${CPU_ARCH} -mtune=${CPU_ARCH} -pipe"
 CFLAGS="\${COMMON_FLAGS}"
 CXXFLAGS="\${COMMON_FLAGS}"
-RUSTFLAGS="-C opt-level=2"
+RUSTFLAGS="-C opt-level=3"
 MAKEOPTS="-j${CORES} -l${CORES}"
 # CFLAGS is NOT a binpkg matching key (the binhost index doesn't even contain
 # it), so znver tuning never rejects official binaries — it only affects the
