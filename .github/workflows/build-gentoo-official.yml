@@ -545,6 +545,7 @@ jobs:
           emaint binhost --fix
 
           emerge --oneshot --getbinpkg --backtrack=30 --quiet-build=y '>=dev-util/gdbus-codegen-2.88.1' 2>/dev/null || true
+          emerge --oneshot --getbinpkg=n --usepkg=n --backtrack=30 --quiet-build=y "x11-base/xorg-server" 2>/dev/null || true
 
           if echo "${TARGET}" | grep -qE "media-libs/mesa|media-libs/libsdl2|media-video/ffmpeg|media-video/pipewire|x11-libs/gtk|gui-libs/libdecor|gui-wm/"; then
               emerge --oneshot --getbinpkg --backtrack=30 --quiet-build=y "dev-libs/wayland" "dev-util/wayland-scanner" 2>/dev/null || {
