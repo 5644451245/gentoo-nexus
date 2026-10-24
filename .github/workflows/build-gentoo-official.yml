@@ -293,8 +293,9 @@ jobs:
           mkdir -p /var/db/repos/gentoo /etc/portage/repos.conf
           emerge-webrsync -q
 
+          eselect profile list 2>/dev/null || \
           eselect profile set default/linux/amd64/23.0/desktop 2>/dev/null || \
-            eselect profile set default/linux/amd64/23.0/desktop
+          eselect profile set default/linux/amd64/23.0/desktop
 
           getuto 2>/dev/null || emerge -q --oneshot app-crypt/gentoo-keys 2>/dev/null || true
 
@@ -581,14 +582,6 @@ jobs:
             echo ">>> Perl stack is current (${INSTALLED_PERL:-none})."
           fi
 
-          # Self-heal the gpm/ncurses circular dependency. The desktop profile
-          # enables gpm globally, so the consumer's ncurses carries gpm; if the
-          # restored nexus ncurses binary lacks it (stale build), the binary is
-          # rejected and Portage tries a source rebuild of ncurses+gpm, which
-          # deadlocks: ncurses(gpm) needs gpm headers at buildtime and gpm needs
-          # ncurses at buildtime. Bootstrap in dependency order so both land in
-          # the local binrepo with correct USE: ncurses -gpm (binary) -> gpm
-          # (binary) -> ncurses +gpm (source rebuild, --buildpkg).
           HEAL_NCURSES="false"
           INSTALLED_NCURSES=$(portageq best_version / 'sys-libs/ncurses' 2>/dev/null || true)
           if [ -n "$INSTALLED_NCURSES" ] && \
@@ -615,9 +608,7 @@ jobs:
             echo ">>> gpm/ncurses heal complete."
           fi
 
-          # Safety skip check inside Docker (defense-in-depth):
-          # Only skip when NOT force-rebuilding. FORCE="true" forces all;
-          # a list of atoms forces only those matching the current CPV.
+
           FORCE_MATCH="false"
           if [[ "$FORCE" == "true" ]]; then
             FORCE_MATCH="true"
@@ -642,22 +633,18 @@ jobs:
           CPV="${TARGET#=}"
           PN=$(echo "$CPV" | sed -E 's/-[0-9].*//')
           if [[ "$FORCE_MATCH" == "true" ]]; then
-            # Force rebuild: build the TARGET from SOURCE so the new flags
-            # (e.g. VIDEO_CARDS) actually take effect, while dependencies are
-            # still fetched as binaries via --getbinpkg. --usepkg-exclude takes a
-            # package NAME (not a versioned atom) and stops Portage reusing the
-            # existing target binary.
+
             echo ">>> FORCE REBUILD: compiling ${TARGET} from source (deps from binpkg)"
             emerge --oneshot --getbinpkg --buildpkg --usepkg-exclude "$PN" \
-              --binpkg-respect-use=n --quiet-build=y --keep-going \
-              --autounmask=y \
+              --binpkg-respect-use=y --quiet-build=y --keep-going \
+              --autounmask=n \
               "$TARGET" 2>&1 | tee /tmp/emerge.log
             BUILD_EXIT=${PIPESTATUS[0]}
           else
-            # Normal build: reuse existing binaries where possible, build target.
+
             emerge --oneshot --usepkg --getbinpkg --buildpkg --backtrack=30 \
-              --binpkg-respect-use=n --quiet-build=y --keep-going \
-              --autounmask=y \
+              --binpkg-respect-use=y --quiet-build=y --keep-going \
+              --autounmask=n \
               "$TARGET" 2>&1 | tee /tmp/emerge.log
             BUILD_EXIT=${PIPESTATUS[0]}
           fi
