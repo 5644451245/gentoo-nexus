@@ -359,6 +359,7 @@ jobs:
           USES
 
           cat > /etc/portage/package.use/gaming << 'GAMING'
+          net-libs/webkit-gtk -examples -gamepad keyring -gstreamer introspection -pdf -jpegxl -lcms -seccomp -spell -systemd wayland X
           app-accessibility/at-spi2-core -abi_x86_32
           app-arch/brotli -abi_x86_32
           app-arch/bzip2 -abi_x86_32
