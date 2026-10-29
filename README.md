@@ -1,2 +1,4 @@
 <div align="center">
-just a firefoxesr builder
+A gentoo binary package builder.
+To change USE flags ,edit workflow files.
+AI project maybe
