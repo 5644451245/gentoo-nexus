@@ -294,24 +294,24 @@ jobs:
           emerge-webrsync -q
 
           eselect profile list 2>/dev/null || \
-          eselect profile set default/linux/amd64/23.0/desktop 2>/dev/null || \
-          eselect profile set default/linux/amd64/23.0/desktop
+          eselect profile set default/linux/amd64/23.0/hardened/selinux 2>/dev/null || \
+          eselect profile set default/linux/amd64/23.0/hardened/selinux
 
           getuto 2>/dev/null || emerge -q --oneshot app-crypt/gentoo-keys 2>/dev/null || true
 
           cat > /etc/portage/make.conf << 'MAKECONF'
-          COMMON_FLAGS="-O2 -pipe -march=skylake -flto -ffunction-sections -fdata-sections"
+          COMMON_FLAGS="-O3 -pipe -march=skylake -flto -ffunction-sections -fdata-sections -fipa-pta"
           CFLAGS="${COMMON_FLAGS}"
           CXXFLAGS="${COMMON_FLAGS}"
           FCFLAGS="${COMMON_FLAGS}"
           FFLAGS="${COMMON_FLAGS}"
           LDFLAGS="-Wl,-O2 -Wl,--as-needed -Wl,--gc-sections"
-          RUSTFLAGS="-C opt-level=3 -C linker=clang -C debuginfo=0"
+          RUSTFLAGS="-C opt-level=3 -C linker=clang -C debuginfo=0 -C linker-plugin-lto -C lto=fat"
           USE="-split-usr -static-libs unicode openrc -systemd acl dbus pam elogind udev -minimal -doc -man  -test -examples"
           VIDEO_CARDS="amdgpu radeonsi intel"
           CPU_FLAGS_X86="aes avx avx2 bmi1 bmi2 f16c fma3 mmx mmxext pclmul popcnt rdrand sse sse2 sse3 sse4_1 sse4_2 ssse3"
 
-          FEATURES="getbinpkg buildpkg ccache binpkg-ignore-signature -pkgdir-index-trusted -sandbox -usersandbox -ipc-sandbox -network-sandbox -pid-sandbox"
+          FEATURES="-selinux getbinpkg buildpkg ccache binpkg-ignore-signature -pkgdir-index-trusted -sandbox -usersandbox -ipc-sandbox -network-sandbox -pid-sandbox"
           CCACHE_DIR="/var/cache/ccache"
           BINPKG_FORMAT="gpkg"
           PKGDIR="/var/cache/binpkgs"
