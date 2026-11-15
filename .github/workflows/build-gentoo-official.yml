@@ -84,7 +84,7 @@ jobs:
           docker run --rm \
             -v "${{ github.workspace }}/binpkgs:/var/cache/binpkgs:rw" \
             -v "${{ github.workspace }}:/var/db/repos/gentoo-nexus:ro" \
-            gentoo/stage3:amd64-hardened-selinux-openrc \
+            gentoo/stage3:amd64-hardened-openrc \
             sh -c "
           python3 -m pip install --quiet zstandard 2>/dev/null || true
           python3 -c '
