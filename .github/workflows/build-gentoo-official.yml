@@ -84,7 +84,7 @@ jobs:
           docker run --rm \
             -v "${{ github.workspace }}/binpkgs:/var/cache/binpkgs:rw" \
             -v "${{ github.workspace }}:/var/db/repos/gentoo-nexus:ro" \
-            gentoo/stage3:amd64-desktop-openrc \
+            gentoo/stage3:amd64-hardened-selinux-openrc \
             sh -c "
           python3 -m pip install --quiet zstandard 2>/dev/null || true
           python3 -c '
@@ -339,6 +339,7 @@ jobs:
           mkdir -p /etc/portage/package.use
           cat > /etc/portage/package.use/nexus << 'USES'
           media-libs/opus -abi_x86_64
+          sys-libs/libselinux python
           gui-libs/gtk introspection
           sys-libs/libsepol static-libs
           sys-auth/seatd -server
