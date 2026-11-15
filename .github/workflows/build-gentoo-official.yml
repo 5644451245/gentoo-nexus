@@ -340,6 +340,7 @@ jobs:
           cat > /etc/portage/package.use/nexus << 'USES'
           media-libs/opus -abi_x86_64
           gui-libs/gtk introspection
+          sys-libs/libsepol static-libs
           sys-auth/seatd -server
           sys-kernel/installkernel -dracut grub
           sys-kernel/linux-firmware redistributable -initramfs
