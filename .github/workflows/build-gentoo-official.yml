@@ -337,6 +337,7 @@ jobs:
 
           mkdir -p /etc/portage/package.use
           cat > /etc/portage/package.use/nexus << 'USES'
+          openjdk alsa -big-endian -cups -debug -doc -examples -headless-awt jbootstrap -source -static-libs -system-bootstrap -systemtap
           media-libs/opus -abi_x86_64
           sys-libs/libselinux python
           gui-libs/gtk introspection
